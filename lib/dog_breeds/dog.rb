@@ -1,6 +1,6 @@
 class Dog
 
-    attr_accessor :breed, :breed_url
+    attr_accessor :breed, :breed_url, :temperament, :akc, :height, :weight, :life, :group
     @@all=[]
 
     def initialize

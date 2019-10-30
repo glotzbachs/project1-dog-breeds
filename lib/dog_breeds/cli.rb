@@ -54,7 +54,7 @@ class DogBreeds::CLI
     end
 
        def test
-        Scraper.breed_info_scrape("German Shepard")
+        Scraper.breed_info_scrape(Dog.all[0])
        end
 end
 
