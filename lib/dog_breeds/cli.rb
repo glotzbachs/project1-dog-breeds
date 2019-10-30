@@ -13,7 +13,7 @@ class DogBreeds::CLI
         puts ""
         puts "Thinking about getting a new friend for the family?"
         puts "Check out these types of dogs to find out which one is right for you!"
-        puts "Type 'list' to see the top rated dogs from AKC(American Kennel Club)."
+        puts "Type 'list' to see the top 75 rated dogs from AKC(American Kennel Club)."
         puts ""
     end
 
@@ -42,19 +42,20 @@ class DogBreeds::CLI
         while input!='exit'
         input=gets.strip
             case 
-            when input.to_i > 0 && input.to_i < 193
-                dog_info(input)
+            when input.to_i > 0 && input.to_i <= Dog.all.count
+                dog_info(Dog.all[input.to_i-1])
             when input.downcase == "list"
                 list_breeds
             when input.downcase == "exit"
                 done
-            when input.downcase != ("list" && "exit")
+            when input.downcase != "list" && input.downcase != "exit" && input.to_i.to_s != input
                 puts " "
                 puts "Sorry, that was not a valid command. Try again."
                 menu
-            # when input.to_i > 0 || input.to_i < 193
-            #     puts "Sorry, that number is not on our list."
-            #     puts "Try again later, and maybe we'll have more info on the dog you're looking for!"
+            when input.to_i < 0 || input.to_i > Dog.all.count
+                puts "Sorry, that number is not on our list."
+                puts "Try again later, and maybe we'll have more info on the dog you're looking for!"
+                menu
             end
         end     
     end
@@ -65,25 +66,21 @@ class DogBreeds::CLI
         puts " "
     end
 
-    def dog_info(input) 
-        Dog.all.each.with_index(1) do |dog,index|
-            if index==input.to_i
-                Scraper.breed_info_scrape(dog) if !dog.breed
-                puts " "
-                puts " "
-                puts "#{dog.breed}"
-                x="-"
-                puts x*(dog.breed.length)
-                puts " "
-                puts "Teperament: #{dog.temperament}"
-                puts "AKC Breed Popularity: #{dog.akc}"
-                puts "Height: #{dog.height}"
-                puts "Weight: #{dog.weight}"
-                puts "Life Expectancy: #{dog.life}"
-                puts "Group: #{dog.group}"
-                puts " "
-            end
-        end
+    def dog_info(dog)  
+        Scraper.breed_info_scrape(dog) if !dog.temperament
+        puts " "
+        puts " "
+        puts "#{dog.breed}"
+        x="-"
+        puts x*(dog.breed.length)
+        puts " "
+        puts "Teperament: #{dog.temperament}"
+        puts "AKC Breed Popularity: #{dog.akc}"
+        puts "Height: #{dog.height}"
+        puts "Weight: #{dog.weight}"
+        puts "Life Expectancy: #{dog.life}"
+        puts "Group: #{dog.group}"
+        puts " "
         menu
     end
 
