@@ -2,6 +2,9 @@ class DogBreeds::CLI
     
     def call
         greeting
+        Scraper.breed_scrape
+        # binding.pry
+        
         list_breeds
         menu
           
@@ -16,10 +19,10 @@ class DogBreeds::CLI
     end
 
     def list_breeds
-        puts "1. Retriever"
-        puts "2. Lab"
-        puts "3. Poodle"
-        puts "4. Husky"
+        # binding.pry
+        Dog.all.each.with_index(1) do |dog,index|
+            puts "#{index}. #{dog.breed}"
+        end
     end
 
     def menu
