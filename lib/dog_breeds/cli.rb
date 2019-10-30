@@ -2,7 +2,6 @@ class DogBreeds::CLI
     
     def call
         greeting
-        Scraper.breed_scrape
         user 
     end
 
@@ -30,6 +29,7 @@ class DogBreeds::CLI
     end
 
     def list_breeds
+        Scraper.breed_scrape if Dog.all==[]
         puts ""
         Dog.all.each.with_index(1) do |dog,index|
             puts "#{index}. #{dog.breed}"
@@ -68,7 +68,7 @@ class DogBreeds::CLI
     def dog_info(input) 
         Dog.all.each.with_index(1) do |dog,index|
             if index==input.to_i
-                Scraper.breed_info_scrape(dog) 
+                Scraper.breed_info_scrape(dog) if !dog.breed
                 puts " "
                 puts " "
                 puts "#{dog.breed}"
