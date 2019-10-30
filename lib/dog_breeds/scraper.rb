@@ -13,9 +13,26 @@ class Scraper
     end
 
     def self.breed_info_scrape(dog)
-
+        
+        html=open("https://www.akc.org/dog-breeds/german-shepherd-dog/")#{breed_url}
+        doc = Nokogiri::HTML(html)
+        info={}
+        attributes=doc.css('ul.attribute-list')
+        attributes.each do |attribute|
+            key=attribute.css('span')[0].text.downcase.split(":")[0] 
+            value=attribute.css('span')[1].text.strip
+            info[:"#{key}"]=value
+           
+        end
+         binding.pry
+        info
+        
+   
     end
 
 end
 
 
+
+#attribute= .css('span')[0].text
+# attribute_info= .css('span')[1].text
