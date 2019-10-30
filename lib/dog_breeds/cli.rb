@@ -3,27 +3,22 @@ class DogBreeds::CLI
     def call
         greeting
         Scraper.breed_scrape
-        menu 
+        user 
     end
 
     def greeting
+        puts ""
+        puts ""
         puts "Welcome to your Furry Friend Finder"
         puts "-----------------------------------"
+        puts ""
         puts "Thinking about getting a new friend for the family?"
         puts "Check out these types of dogs to find out which one is right for you!"
         puts "Type 'list' to see the top rated dogs from AKC(American Kennel Club)."
-    end
-
-    def list_breeds
-        # binding.pry
-        Dog.all.each.with_index(1) do |dog,index|
-            puts "#{index}. #{dog.breed}"
-        end
+        puts ""
     end
 
     def menu
-        input=nil
-        while input!='exit'
         puts " "
         puts "-----------------------------------------------------------------------"
         puts "For more info about a particular breed, enter it's number for details!"
@@ -32,6 +27,19 @@ class DogBreeds::CLI
         puts "To see the list of breeds again, type 'list'"
         puts "-----------------------------------------------------------------------"
         puts " "
+    end
+
+    def list_breeds
+        puts ""
+        Dog.all.each.with_index(1) do |dog,index|
+            puts "#{index}. #{dog.breed}"
+        end
+        menu
+    end
+
+    def user
+        input=nil
+        while input!='exit'
         input=gets.strip
             case 
             when input.to_i > 0 && input.to_i < 193
@@ -43,6 +51,7 @@ class DogBreeds::CLI
             when input.downcase != ("list" && "exit")
                 puts " "
                 puts "Sorry, that was not a valid command. Try again."
+                menu
             # when input.to_i > 0 || input.to_i < 193
             #     puts "Sorry, that number is not on our list."
             #     puts "Try again later, and maybe we'll have more info on the dog you're looking for!"
@@ -59,19 +68,23 @@ class DogBreeds::CLI
     def dog_info(input) 
         Dog.all.each.with_index(1) do |dog,index|
             if index==input.to_i
-                # binding.pry
                 Scraper.breed_info_scrape(dog) 
                 puts " "
+                puts " "
                 puts "#{dog.breed}"
-                puts "-----"
+                x="-"
+                puts x*(dog.breed.length)
+                puts " "
                 puts "Teperament: #{dog.temperament}"
                 puts "AKC Breed Popularity: #{dog.akc}"
                 puts "Height: #{dog.height}"
                 puts "Weight: #{dog.weight}"
                 puts "Life Expectancy: #{dog.life}"
                 puts "Group: #{dog.group}"
+                puts " "
             end
         end
+        menu
     end
 
     #    def test
